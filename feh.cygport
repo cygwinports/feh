@@ -1,0 +1,27 @@
+NAME="feh"
+VERSION=2.15.2
+RELEASE=1
+CATEGORY="Graphics"
+SUMMARY="Lightweight image viewer"
+DESCRIPTION="feh is an X11 image viewer aimed mostly at console users. Unlike
+most other viewers, it does not have a fancy GUI, but simply displays images.
+It is controlled via commandline arguments and configurable key/mouse actions."
+HOMEPAGE="http://feh.finalrewind.org/"
+SRC_URI="${HOMEPAGE}/feh-${VERSION}.tar.bz2"
+PATCH_URI="http://pkgs.fedoraproject.org/cgit/rpms/feh.git/plain/feh-1.10.1-dejavu.patch"
+
+REQUIRES="dejavu-fonts ImageMagick"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	rm -f src/deps.mk
+	cygmake PREFIX=/usr
+}
+
+src_install() {
+	cd ${B}
+	cyginstall PREFIX=/usr
+	# patched for DejaVu
+	rm -f ${D}/usr/share/feh/fonts/yudit.ttf
+}
